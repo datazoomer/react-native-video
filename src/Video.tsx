@@ -349,7 +349,7 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
       }
 
       if (!nativeRef.current) {
-        console.warn('Video Component is not mounted');
+        console.warn('Video Component is not mounted !');
         return;
       }
 
