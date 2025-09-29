@@ -2,6 +2,7 @@ import {NativeModules} from 'react-native';
 import type {
   Int32,
 } from 'react-native/Libraries/Types/CodegenTypes';
+import type {DzSettings} from '../types/datazoom-settings';
 
 /**
  * Interface for Datazoom Analytics functionality
@@ -9,9 +10,10 @@ import type {
  */
 export interface DatazoomManagerType {
   /**
-   * Initialize Datazoom analytics system (global initialization)
+   * Initialize Datazoom analytics system with settings
+   * @param settings - Configuration settings for Datazoom
    */
-  initDatazoom: () => Promise<void>;
+  initDatazoom: (settings: DzSettings) => Promise<void>;
   
   /**
    * Start Datazoom data collection for a specific video

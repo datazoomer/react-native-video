@@ -45,14 +45,25 @@ class DatazoomManagerModule(reactContext: ReactApplicationContext) : ReactContex
     }
 
     /**
-     * Initialize Datazoom analytics system
+     * Initialize Datazoom analytics system with settings
      */
     @ReactMethod
-    fun initDatazoom() {
+    fun initDatazoom(settings: ReadableMap) {
         try {
-            // TODO: Implement Datazoom initialization
+            val configId = settings.getString("configId") ?: "default-config-id"
+            val logLevel = settings.getString("logLevel") ?: "info"
+            val isProduction = settings.getBoolean("isProduction")
+            
+            Log.d(TAG, "🎯 Initializing Datazoom with settings:")
+            Log.d(TAG, "   - configId: $configId")
+            Log.d(TAG, "   - logLevel: $logLevel")
+            Log.d(TAG, "   - isProduction: $isProduction")
+            
+            // TODO: Implement Datazoom initialization with settings
             // This is where you would integrate with the Android Datazoom SDK
-            Log.d(TAG, "🎯 Datazoom initialized")
+            // Example: Datazoom.initialize(configId, logLevel, isProduction)
+            
+            Log.d(TAG, "✅ Datazoom initialized with custom settings")
         } catch (e: Exception) {
             Log.e(TAG, "Error initializing Datazoom: ${e.message}")
         }

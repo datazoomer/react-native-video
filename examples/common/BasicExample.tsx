@@ -1,6 +1,6 @@
 import React, {useCallback, useRef, useState, useEffect} from 'react';
 
-import {Platform, TouchableOpacity, View, StatusBar, Button, NativeModules} from 'react-native';
+import {Platform, TouchableOpacity, View, StatusBar, Button, NativeModules, BackHandler, AppState} from 'react-native';
 
 import Video, {
   SelectedVideoTrackType,
@@ -40,7 +40,11 @@ import {
 } from './constants';
 import {Overlay, toast, VideoLoader} from './components';
 
-const BasicExample = () => {
+interface BasicExampleProps {
+  onGoBack?: () => void;
+}
+
+const BasicExample = ({onGoBack}: BasicExampleProps) => {
   const [rate, setRate] = useState(1);
   const [volume, setVolume] = useState(1);
   const [muted, setMuted] = useState(false);
@@ -95,6 +99,83 @@ const BasicExample = () => {
   const viewStyle = fullscreen ? styles.fullScreen : styles.halfScreen;
   const currentSrc = srcList[srcListId];
   const additional = currentSrc as AdditionalSourceInfo;
+
+  // Handle back button press
+  const handleBackPress = useCallback(() => {
+    console.log('🔙 [BasicExample] Back button pressed, stopping Datazoom...');
+    
+    // Stop Datazoom tracking for the current video
+    if (videoRef.current) {
+      try {
+        videoRef.current.stopDatazoom();
+        console.log('✅ [BasicExample] Datazoom stopped successfully via handleBackPress');
+      } catch (error) {
+        console.error('❌ [BasicExample] Error stopping Datazoom:', error);
+      }
+    }
+
+    // Navigate back to Initial Screen
+    if (onGoBack) {
+      onGoBack();
+      return true; // Prevent default back action
+    }
+    
+    return false; // Allow default back action if no onGoBack provided
+  }, [onGoBack]);
+
+  // Add hardware back button listener for Android
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+    
+    // Add AppState listener to catch navigation changes
+    const handleAppStateChange = (nextAppState: string) => {
+      console.log(`🔄 [BasicExample] App state changed to: ${nextAppState}`);
+      if (nextAppState === 'background' || nextAppState === 'inactive') {
+        console.log('📱 [BasicExample] App going to background, stopping Datazoom...');
+        if (videoRef.current) {
+          try {
+            videoRef.current.stopDatazoom();
+            console.log('✅ [BasicExample] Datazoom stopped due to app state change');
+          } catch (error) {
+            console.error('❌ [BasicExample] Error stopping Datazoom on app state change:', error);
+          }
+        }
+      }
+    };
+    
+    const appStateListener = AppState.addEventListener('change', handleAppStateChange);
+    
+    // Add cleanup logging
+    return () => {
+      console.log('🧹 [BasicExample] Component unmounting...');
+      
+      // Check if videoRef exists
+      if (!videoRef.current) {
+        console.warn('⚠️ [BasicExample] videoRef.current is null during cleanup');
+        return;
+      }
+      
+      // Check if stopDatazoom method exists
+      if (!videoRef.current.stopDatazoom) {
+        console.warn('⚠️ [BasicExample] stopDatazoom method not found on videoRef');
+        return;
+      }
+      
+      // Call stopDatazoom on component unmount
+      try {
+        console.log('🛑 [BasicExample] Calling stopDatazoom from component cleanup...');
+        const result = videoRef.current.stopDatazoom();
+        console.log('🛑 [BasicExample] stopDatazoom returned:', result);
+        console.log('✅ [BasicExample] Datazoom stopped successfully from cleanup');
+      } catch (error) {
+        console.error('❌ [BasicExample] Error stopping Datazoom on unmount:', error);
+        console.error('❌ [BasicExample] Error details:', JSON.stringify(error));
+      }
+      
+      backHandler.remove();
+      appStateListener?.remove();
+    };
+  }, [handleBackPress]);
 
   const goToChannel = useCallback((channel: number) => {
     setSrcListId(channel);
@@ -372,6 +453,18 @@ const BasicExample = () => {
       {/* Test Button for Datazoom */}
       <View style={{position: 'absolute', top: 100, right: 20, zIndex: 999}}>
         <Button title="Test Datazoom" onPress={testDatazoom} />
+      </View>
+      
+      {/* Manual Back Button for Testing */}
+      <View style={{position: 'absolute', top: 50, left: 20, zIndex: 999}}>
+        <Button 
+          title="Manual Back" 
+          onPress={() => {
+            console.log('🔄 [BasicExample] Manual back button pressed');
+            handleBackPress();
+          }} 
+          color="#FF6B6B" 
+        />
       </View>
       
       <Overlay

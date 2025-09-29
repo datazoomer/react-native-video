@@ -397,12 +397,12 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
     }, []);
 
     const setDatazoomNative = useCallback(() => {
-      console.log('🎯 setDatazoomNative called!');
+      console.log('🎯 [Video] setDatazoomNative called!');
       return NativeDatazoomManager.startDatazoom(getReactTag(nativeRef));
     }, []);
 
     const stopDatazoom = useCallback(() => {
-      console.log('🛑 stopDatazoom called!');
+      console.log('🛑 [Video] stopDatazoom called!');
       return NativeDatazoomManager.stopDatazoom(getReactTag(nativeRef));
     }, []);
 
@@ -508,9 +508,13 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
 
     const onVideoError = useCallback(
       (e: NativeSyntheticEvent<OnVideoErrorData>) => {
+        // Stop Datazoom tracking on error
+        console.log('❌ Video error, stopping Datazoom...');
+        stopDatazoom();
+        
         onError?.(e.nativeEvent);
       },
-      [onError],
+      [onError, stopDatazoom],
     );
 
     const onVideoProgress = useCallback(
@@ -532,6 +536,17 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
         onPlaybackStateChanged?.(e.nativeEvent);
       },
       [onPlaybackStateChanged],
+    );
+
+    const onVideoEnd = useCallback(
+      () => {
+        // Stop Datazoom tracking when video ends
+        console.log('🏁 Video ended, stopping Datazoom...');
+        stopDatazoom();
+        
+        onEnd?.();
+      },
+      [onEnd, stopDatazoom],
     );
 
     const _shutterColor = useMemo(() => {
@@ -878,7 +893,7 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
           onVideoError={onError ? onVideoError : undefined}
           onVideoProgress={onProgress ? onVideoProgress : undefined}
           onVideoSeek={onSeek ? onVideoSeek : undefined}
-          onVideoEnd={onEnd}
+          onVideoEnd={onEnd ? onVideoEnd : undefined}
           onVideoBuffer={onBuffer ? onVideoBuffer : undefined}
           onVideoPlaybackStateChanged={
             onPlaybackStateChanged ? onVideoPlaybackStateChanged : undefined

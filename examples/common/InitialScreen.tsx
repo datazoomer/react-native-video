@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   NativeModules,
 } from 'react-native';
+import {DzSettings, LogLevel} from '../../src/types/datazoom-settings';
 import BasicExample from './BasicExample';
 
 const InitialScreen = () => {
@@ -25,15 +26,23 @@ const InitialScreen = () => {
         throw new Error('DatazoomManager native module not found');
       }
 
-      // Call initDatazoom
-      await NativeModules.DatazoomManager.initDatazoom();
+      // Create Datazoom settings
+      const dzSettings: DzSettings = {
+        configId: 'f4864053-3ed0-4b94-bc19-1d130d624704',
+        logLevel: LogLevel.VERBOSE,
+        isProduction: true
+      };
+
+      console.log('🎯 Datazoom settings:', dzSettings);
+
+      // Call initDatazoom with settings
+      await NativeModules.DatazoomManager.initDatazoom(dzSettings);
       
-      console.log('✅ Datazoom initialized successfully!');
       setIsDatazoomInitialized(true);
       
       Alert.alert(
         'Success!',
-        'Datazoom has been initialized successfully. You can now proceed to the video examples.',
+        'Datazoom has been initialized successfully with custom settings. You can now proceed to the video examples.',
         [{text: 'OK'}]
       );
       
@@ -53,9 +62,14 @@ const InitialScreen = () => {
     setShowBasicExample(true);
   };
 
+  const handleGoBack = () => {
+    console.log('🔙 Going back to Initial Screen');
+    setShowBasicExample(false);
+  };
+
   // If user has navigated to BasicExample, show that screen
   if (showBasicExample) {
-    return <BasicExample />;
+    return <BasicExample onGoBack={handleGoBack} />;
   }
 
   return (

@@ -57,21 +57,42 @@ class RCTDatazoomManager: NSObject, RCTBridgeModule {
     // MARK: - Datazoom Methods
     
 #if USE_DZ_ADPATERS
-    @objc(initDatazoom)
-    func initDatazoom() {
-        let configBuilder = Config.Builder(configurationId: "f4864053-3ed0-4b94-bc19-1d130d624704")
-        configBuilder.logLevel(logLevel: .verbose)
-        configBuilder.isProduction(isProduction: true)
+    @objc(initDatazoom:)
+    func initDatazoom(_ settings: [String: Any]) {
+        let configId = settings["configId"] as? String ?? "default-config-id"
+        let isProduction = settings["isProduction"] as? Bool ?? false
+        let logLevelString = settings["logLevel"] as? String ?? "info"
+        
+        // Convert string logLevel to DzAVPlayerAdapter log level
+        let logLevel: LogLevel = {
+            switch logLevelString.lowercased() {
+            case "verbose": return .verbose
+            case "debug": return .debug
+            case "warning": return .warning
+            case "info": return .info
+            case "off": return .off
+            default: return .info
+            }
+        }()
+        
+        print("🎯 Initializing Datazoom with settings:")
+        print("   - configId: \(configId)")
+        print("   - logLevel: \(logLevelString)")
+        print("   - isProduction: \(isProduction)")
+        
+        let configBuilder = Config.Builder(configurationId: configId)
+        configBuilder.logLevel(logLevel: logLevel)
+        configBuilder.isProduction(isProduction: isProduction)
     
         Datazoom.shared.doInit(config: configBuilder.build())
-        debugPrint("DZ initalized Called")
-         Datazoom.shared.sdkEvents.watch {  event in
-          guard let eventDescription = event?.description as? String else { return }
-          if eventDescription.contains("SdkInit") {
-            debugPrint("DZ initalized successfully")
-          }
-         }   
-      }
+        
+        Datazoom.shared.sdkEvents.watch { event in
+            guard let eventDescription = event?.description as? String else { return }
+            if eventDescription.contains("SdkInit") {
+                debugPrint("✅ DZ initialized successfully with settings")
+            }
+        }   
+    }
     
     @objc(startDatazoom:)
     func startDatazoom(_ reactTag: NSNumber) {
@@ -103,9 +124,10 @@ class RCTDatazoomManager: NSObject, RCTBridgeModule {
         }
     }
 #else
-    @objc(initDatazoom)
-    func initDatazoom() {
+    @objc(initDatazoom:)
+    func initDatazoom(_ settings: [String: Any]) {
         print("🎯 Datazoom not available - USE_DZ_ADPATERS not defined")
+        print("   Settings received: \(settings)")
     }
     
     @objc(startDatazoom:)
