@@ -48,17 +48,11 @@ class DatazoomManagerModule(reactContext: ReactApplicationContext) : ReactContex
      * Initialize Datazoom analytics system
      */
     @ReactMethod
-    fun initDatazoom(reactTag: Int) {
+    fun initDatazoom() {
         try {
-            performOnPlayerView(reactTag) { playerView ->
-                if (playerView != null) {
-                    // TODO: Implement Datazoom initialization
-                    // This is where you would integrate with the Android Datazoom SDK
-                    Log.d(TAG, "🎯 Datazoom initialized for video with tag $reactTag")
-                } else {
-                    Log.e(TAG, "❌ Could not initialize Datazoom - VideoPlayer not found")
-                }
-            }
+            // TODO: Implement Datazoom initialization
+            // This is where you would integrate with the Android Datazoom SDK
+            Log.d(TAG, "🎯 Datazoom initialized")
         } catch (e: Exception) {
             Log.e(TAG, "Error initializing Datazoom: ${e.message}")
         }
@@ -68,16 +62,10 @@ class DatazoomManagerModule(reactContext: ReactApplicationContext) : ReactContex
      * Start Datazoom data collection
      */
     @ReactMethod
-    fun startDatazoom(reactTag: Int) {
+    fun startDatazoom() {
         try {
-            performOnPlayerView(reactTag) { playerView ->
-                if (playerView != null) {
-                    // TODO: Implement Datazoom start
-                    Log.d(TAG, "▶️ Datazoom started for video with tag $reactTag")
-                } else {
-                    Log.e(TAG, "❌ Could not start Datazoom - VideoPlayer not found")
-                }
-            }
+            // TODO: Implement Datazoom start
+            Log.d(TAG, "▶️ Datazoom started")
         } catch (e: Exception) {
             Log.e(TAG, "Error starting Datazoom: ${e.message}")
         }
@@ -87,16 +75,10 @@ class DatazoomManagerModule(reactContext: ReactApplicationContext) : ReactContex
      * Stop Datazoom data collection
      */
     @ReactMethod
-    fun stopDatazoom(reactTag: Int) {
+    fun stopDatazoom() {
         try {
-            performOnPlayerView(reactTag) { playerView ->
-                if (playerView != null) {
-                    // TODO: Implement Datazoom stop
-                    Log.d(TAG, "⏹️ Datazoom stopped for video with tag $reactTag")
-                } else {
-                    Log.e(TAG, "❌ Could not stop Datazoom - VideoPlayer not found")
-                }
-            }
+            // TODO: Implement Datazoom stop
+            Log.d(TAG, "⏹️ Datazoom stopped")
         } catch (e: Exception) {
             Log.e(TAG, "Error stopping Datazoom: ${e.message}")
         }
@@ -106,18 +88,14 @@ class DatazoomManagerModule(reactContext: ReactApplicationContext) : ReactContex
      * Set custom Datazoom configuration
      */
     @ReactMethod
-    fun setDatazoomConfig(reactTag: Int, config: ReadableMap) {
+    fun setDatazoomConfig(config: ReadableMap) {
         try {
-            performOnPlayerView(reactTag) { playerView ->
-                if (playerView != null) {
-                    // TODO: Implement Datazoom configuration
-                    Log.d(TAG, "⚙️ Datazoom config set for video with tag $reactTag: $config")
-                } else {
-                    Log.e(TAG, "❌ Could not set Datazoom config - VideoPlayer not found")
-                }
-            }
+            // TODO: Implement Datazoom configuration
+            Log.d(TAG, "⚙️ Datazoom config set: $config")
         } catch (e: Exception) {
             Log.e(TAG, "Error setting Datazoom config: ${e.message}")
+        }
+    }
         }
     }
 
@@ -125,24 +103,14 @@ class DatazoomManagerModule(reactContext: ReactApplicationContext) : ReactContex
      * Get current Datazoom status
      */
     @ReactMethod
-    fun getDatazoomStatus(reactTag: Int, promise: Promise) {
+    fun getDatazoomStatus(promise: Promise) {
         try {
-            performOnPlayerView(reactTag) { playerView ->
-                if (playerView != null) {
-                    // TODO: Implement actual status retrieval from Datazoom SDK
-                    val status: WritableMap = WritableNativeMap().apply {
-                        putBoolean("isActive", true) // This should come from actual Datazoom status
-                        putString("sessionId", "sample-android-session-id") // This should come from Datazoom
-                    }
-                    promise.resolve(status)
-                } else {
-                    val errorStatus: WritableMap = WritableNativeMap().apply {
-                        putBoolean("isActive", false)
-                        putString("error", "VideoPlayer not found")
-                    }
-                    promise.resolve(errorStatus)
-                }
+            // TODO: Implement actual status retrieval from Datazoom SDK
+            val status: WritableMap = WritableNativeMap().apply {
+                putBoolean("isActive", true) // This should come from actual Datazoom status
+                putString("sessionId", "sample-android-session-id") // This should come from Datazoom
             }
+            promise.resolve(status)
         } catch (e: Exception) {
             Log.e(TAG, "Error getting Datazoom status: ${e.message}")
             promise.reject("DATAZOOM_ERROR", "Failed to get Datazoom status: ${e.message}")

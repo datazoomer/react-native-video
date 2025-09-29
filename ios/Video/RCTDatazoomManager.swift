@@ -57,43 +57,32 @@ class RCTDatazoomManager: NSObject, RCTBridgeModule {
     // MARK: - Datazoom Methods
     
 #if USE_DZ_ADPATERS
-    @objc(initDatazoom:)
-    func initDatazoom(_ reactTag: NSNumber) {
-        performOnVideoView(withReactTag: reactTag, callback: { [weak self] videoView in
-        debugPrint("set Datazoom called!")
-        guard let self = self else { return }
-        debugPrint("set Datazoom guarded!")
-        if let player = videoView?.getAVPlayerInstance() {
-          self.initializeDatazoomIfNeeded(player: player)
-            //debugPrint("Datazoom setDatazoom called successfully!")
-         }
-        })
-    }
-  
-    private func initializeDatazoomIfNeeded(player: AVPlayer) {
-     let configBuilder = Config.Builder(configurationId: "f4864053-3ed0-4b94-bc19-1d130d624704")
-     configBuilder.logLevel(logLevel: .off)
-     configBuilder.isProduction(isProduction: true)
+    @objc(initDatazoom)
+    func initDatazoom() {
+        let configBuilder = Config.Builder(configurationId: "f4864053-3ed0-4b94-bc19-1d130d624704")
+        configBuilder.logLevel(logLevel: .verbose)
+        configBuilder.isProduction(isProduction: true)
     
-     Datazoom.shared.doInit(config: configBuilder.build())
-    
-     Datazoom.shared.sdkEvents.watch {  event in
-       guard let eventDescription = event?.description as? String else { return }
-      //debugPrint(eventDescription)
-        if eventDescription.contains("SdkInit") {
-         self.dzAdapter = Datazoom.shared.createContext(player: player)
-
-          debugPrint("DZ initalized successfully")
-        }
+        Datazoom.shared.doInit(config: configBuilder.build())
+        debugPrint("DZ initalized Called")
+         Datazoom.shared.sdkEvents.watch {  event in
+          guard let eventDescription = event?.description as? String else { return }
+          if eventDescription.contains("SdkInit") {
+            debugPrint("DZ initalized successfully")
+          }
+         }   
       }
-     }
-
+    
     @objc(startDatazoom:)
     func startDatazoom(_ reactTag: NSNumber) {
         performOnVideoView(withReactTag: reactTag) { videoView in
             // Start Datazoom data collection
-            // Implementation depends on DzAVPlayerAdapter API
-            print("▶️ Datazoom started for video with tag \(reactTag)")
+            if let player = videoView?._player {
+                self.dzAdapter = Datazoom.shared.createContext(player: player)
+                print("▶️ Datazoom started for video with tag \(reactTag)")
+            } else {
+                print("❌ Could not start Datazoom - player not found")
+            }
         }
     }
     
@@ -101,40 +90,32 @@ class RCTDatazoomManager: NSObject, RCTBridgeModule {
     func stopDatazoom(_ reactTag: NSNumber) {
         performOnVideoView(withReactTag: reactTag) { videoView in
             // Stop Datazoom data collection
-            // Implementation depends on DzAVPlayerAdapter API
+            self.dzAdapter?.close()
+            self.dzAdapter = nil
             print("⏹️ Datazoom stopped for video with tag \(reactTag)")
         }
     }
     
-    @objc func setDatazoomConfig(_ reactTag: NSNumber, _ config: [String: Any], resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
-      
-      performOnVideoView(withReactTag: reactTag, callback: { videoView in
-        // TODO: Implement set configuration when Android SDK supports it
-        #if USE_DZ_ADPATERS
-             //videoView.player?.dzConfig = config
-            resolve(["success": true])
-        #else
-            resolve(["success": false, "error": "DzAVPlayerAdapter not available"])
-        #endif
-      })
+    @objc func setDatazoomConfig(_ config: [String: Any], resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
+        // TODO: Implement set configuration when SDK supports it
+        print("⚙️ Datazoom config set: \(config)")
+        resolve(["success": true])
     }
     
 
-  @objc(getDatazoomStatus:resolver:rejecter:)
-  func getDatazoomStatus(_ reactTag: NSNumber, resolver: @escaping RCTPromiseResolveBlock, rejecter: @escaping RCTPromiseRejectBlock) {
-    performOnVideoView(withReactTag: reactTag) { videoView in
+  @objc(getDatazoomStatus:rejecter:)
+  func getDatazoomStatus(resolver: @escaping RCTPromiseResolveBlock, rejecter: @escaping RCTPromiseRejectBlock) {
       // Get Datazoom status
-      // Implementation depends on DzAVPlayerAdapter API
-      let status = [
+      // TODO: Implement actual Datazoom status retrieval
+      let status: [String: Any] = [
         "isActive": true,
         "sessionId": "sample-session-id"
       ]
       resolver(status)
-    }
   }
 #else
-    @objc(initDatazoom:)
-    func initDatazoom(_ reactTag: NSNumber) {
+    @objc(initDatazoom)
+    func initDatazoom() {
         print("🎯 Datazoom not available - USE_DZ_ADPATERS not defined")
     }
     
@@ -148,14 +129,14 @@ class RCTDatazoomManager: NSObject, RCTBridgeModule {
         print("⏹️ Datazoom not available - USE_DZ_ADPATERS not defined")
     }
     
-    @objc(setDatazoomConfig:config:)
-    func setDatazoomConfig(_ reactTag: NSNumber, config: NSDictionary) {
+    @objc(setDatazoomConfig:)
+    func setDatazoomConfig(config: NSDictionary) {
         print("⚙️ Datazoom not available - USE_DZ_ADPATERS not defined")
     }
     
-    @objc(getDatazoomStatus:resolver:rejecter:)
-    func getDatazoomStatus(_ reactTag: NSNumber, resolver: @escaping RCTPromiseResolveBlock, rejecter: @escaping RCTPromiseRejectBlock) {
-        let status = [
+    @objc(getDatazoomStatus:rejecter:)
+    func getDatazoomStatus(resolver: @escaping RCTPromiseResolveBlock, rejecter: @escaping RCTPromiseRejectBlock) {
+        let status: [String: Any] = [
             "isActive": false,
             "error": "Datazoom not available - USE_DZ_ADPATERS not defined"
         ]
