@@ -119,11 +119,7 @@ class RCTDatazoomManager: NSObject, RCTBridgeModule {
       })
     }
     
-    @objc func testDatazoomModule(_ resolver: @escaping RCTPromiseResolveBlock, rejecter: @escaping RCTPromiseRejectBlock) {
-        resolver(["success": true, "message": "DatazoomManager module is working!"])
-    }
-    
-    
+
   @objc(getDatazoomStatus:resolver:rejecter:)
   func getDatazoomStatus(_ reactTag: NSNumber, resolver: @escaping RCTPromiseResolveBlock, rejecter: @escaping RCTPromiseRejectBlock) {
     performOnVideoView(withReactTag: reactTag) { videoView in

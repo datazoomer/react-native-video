@@ -34,12 +34,6 @@ export interface DatazoomManagerType {
   setDatazoomConfig: (reactTag: Int32, config: Record<string, any>) => Promise<void>;
   
   /**
-   * Test method to verify DatazoomManager module is working
-   * @returns Promise resolving to test result
-   */
-  testDatazoomModule: () => Promise<{success: boolean; message: string}>;
-  
-  /**
    * Get current Datazoom status
    * @param reactTag - React tag for the video component
    * @returns Promise resolving to status object

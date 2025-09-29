@@ -75,16 +75,6 @@ const BasicExample = () => {
     console.log('DatazoomManager available:', !!NativeModules.DatazoomManager);
     if (NativeModules.DatazoomManager) {
       console.log('✅ DatazoomManager found:', Object.getOwnPropertyNames(NativeModules.DatazoomManager));
-      
-      // Test the module
-      console.log('🧪 Testing DatazoomManager module...');
-      NativeModules.DatazoomManager.testDatazoomModule()
-        .then((result: any) => {
-          console.log('✅ DatazoomManager test result:', result);
-        })
-        .catch((error: any) => {
-          console.error('❌ DatazoomManager test failed:', error);
-        });
     } else {
       console.error('❌ DatazoomManager not found!');
       console.log('Available modules:', Object.keys(NativeModules));

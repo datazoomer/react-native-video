@@ -122,23 +122,6 @@ class DatazoomManagerModule(reactContext: ReactApplicationContext) : ReactContex
     }
 
     /**
-     * Test method to verify DatazoomManager module is working
-     */
-    @ReactMethod
-    fun testDatazoomModule(promise: Promise) {
-        try {
-            val result: WritableMap = WritableNativeMap()
-            result.putBoolean("success", true)
-            result.putString("message", "DatazoomManager module is working!")
-            promise.resolve(result)
-            Log.d(TAG, "✅ DatazoomManager test successful")
-        } catch (e: Exception) {
-            Log.e(TAG, "❌ DatazoomManager test failed: ${e.message}")
-            promise.reject("TEST_ERROR", "DatazoomManager test failed: ${e.message}")
-        }
-    }
-
-    /**
      * Get current Datazoom status
      */
     @ReactMethod
