@@ -9,6 +9,10 @@ import React
 // MARK: - RCTVideo
 
 class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverHandler {
+    // Expose AVPlayer instance for React Native bridge
+    @objc func getAVPlayerInstance() -> AVPlayer? {
+        return _player
+    }
     var _player: AVPlayer?
     private var _playerItem: AVPlayerItem?
     private var _source: VideoSource?

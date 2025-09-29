@@ -40,7 +40,7 @@
     },
     "scripts": {
         "lint": "yarn eslint .",
-        "build": "yarn tsc",
+        "build": "yarn tsc && node scripts/fix-react19.js",
         "prepare": "yarn build",
         "xbasic": "yarn --cwd examples/basic",
         "docs": "yarn --cwd docs build",

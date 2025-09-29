@@ -241,6 +241,13 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
         enterPictureInPicture,
         exitPictureInPicture,
         restoreUserInterfaceForPictureInPictureStopCompleted: unsupported,
+        // Datazoom Analytics Methods - Not supported on web
+        setDatazoom: unsupported,
+        initDatazoom: unsupported,
+        startDatazoom: unsupported,
+        stopDatazoom: unsupported,
+        setDatazoomConfig: unsupported,
+        getDatazoomStatus: async () => ({isActive: false, error: 'Datazoom not supported on web'}),
         nativeHtmlVideoRef: nativeRef,
       }),
       [
