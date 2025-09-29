@@ -401,11 +401,6 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
       return NativeDatazoomManager.startDatazoom(getReactTag(nativeRef));
     }, []);
 
-    const initDatazoom = useCallback(() => {
-      console.log('🎯 initDatazoom called!');
-      return NativeDatazoomManager.initDatazoom();
-    }, []);
-
     const stopDatazoom = useCallback(() => {
       console.log('🛑 stopDatazoom called!');
       return NativeDatazoomManager.stopDatazoom(getReactTag(nativeRef));
@@ -510,10 +505,6 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
           hasPoster && setShowPoster(false);
         }
         
-        // Call initDatazoom when video is loaded and ready
-        console.log('📹 Video loaded, calling initDatazoom...');
-        initDatazoom();
-        
         // Start Datazoom tracking for this video
         console.log('📹 Starting Datazoom tracking...');
         setDatazoomNative();
@@ -522,7 +513,7 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
         
         onLoad?.(e.nativeEvent);
       },
-      [onLoad, hasPoster, setShowPoster, initDatazoom, setDatazoomNative, setDatazoomProp],
+      [onLoad, hasPoster, setShowPoster, setDatazoomNative, setDatazoomProp],
     );
 
     const onVideoError = useCallback(
@@ -739,7 +730,6 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
         setSource,
         // Datazoom Analytics Methods
         setDatazoom: setDatazoomNative, // Legacy method - maps to startDatazoom
-        initDatazoom,
         startDatazoom: setDatazoomNative,
         stopDatazoom,
         setDatazoomConfig,
@@ -760,7 +750,6 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
         exitPictureInPicture,
         setSource,
         setDatazoomNative,
-        initDatazoom,
         stopDatazoom,
         setDatazoomConfig,
         getDatazoomStatus,

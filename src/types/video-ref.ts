@@ -23,7 +23,6 @@ export interface VideoRef {
   exitPictureInPicture: () => void;
   // Datazoom Analytics Methods
   setDatazoom: () => void; // Legacy method - maps to startDatazoom
-  initDatazoom: () => void;
   startDatazoom: () => void;
   stopDatazoom: () => void;
   setDatazoomConfig: (config: Record<string, any>) => void;
