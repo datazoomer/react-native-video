@@ -25,7 +25,5 @@ export interface VideoRef {
   setDatazoom: () => void; // Legacy method - maps to startDatazoom
   startDatazoom: () => void;
   stopDatazoom: () => void;
-  setDatazoomConfig: (config: Record<string, any>) => void;
-  getDatazoomStatus: () => Promise<{isActive: boolean; sessionId?: string}>;
   nativeHtmlVideoRef?: RefObject<HTMLVideoElement | null>; // web only
 }

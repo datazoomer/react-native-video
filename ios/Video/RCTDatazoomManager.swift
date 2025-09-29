@@ -102,24 +102,6 @@ class RCTDatazoomManager: NSObject, RCTBridgeModule {
             print("⏹️ Datazoom stopped for video with tag \(reactTag)")
         }
     }
-    
-    @objc func setDatazoomConfig(_ config: [String: Any], resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
-        // TODO: Implement set configuration when SDK supports it
-        print("⚙️ Datazoom config set: \(config)")
-        resolve(["success": true])
-    }
-    
-
-  @objc(getDatazoomStatus:rejecter:)
-  func getDatazoomStatus(resolver: @escaping RCTPromiseResolveBlock, rejecter: @escaping RCTPromiseRejectBlock) {
-      // Get Datazoom status
-      // TODO: Implement actual Datazoom status retrieval
-      let status: [String: Any] = [
-        "isActive": true,
-        "sessionId": "sample-session-id"
-      ]
-      resolver(status)
-  }
 #else
     @objc(initDatazoom)
     func initDatazoom() {
@@ -134,20 +116,6 @@ class RCTDatazoomManager: NSObject, RCTBridgeModule {
     @objc(stopDatazoom:)
     func stopDatazoom(_ reactTag: NSNumber) {
         print("⏹️ Datazoom not available - USE_DZ_ADPATERS not defined")
-    }
-    
-    @objc(setDatazoomConfig:)
-    func setDatazoomConfig(config: NSDictionary) {
-        print("⚙️ Datazoom not available - USE_DZ_ADPATERS not defined")
-    }
-    
-    @objc(getDatazoomStatus:rejecter:)
-    func getDatazoomStatus(resolver: @escaping RCTPromiseResolveBlock, rejecter: @escaping RCTPromiseRejectBlock) {
-        let status: [String: Any] = [
-            "isActive": false,
-            "error": "Datazoom not available - USE_DZ_ADPATERS not defined"
-        ]
-        resolver(status)
     }
 #endif
 }

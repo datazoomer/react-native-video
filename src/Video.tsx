@@ -406,16 +406,6 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
       return NativeDatazoomManager.stopDatazoom(getReactTag(nativeRef));
     }, []);
 
-    const setDatazoomConfig = useCallback((config: Record<string, any>) => {
-      console.log('⚙️ setDatazoomConfig called!', config);
-      return NativeDatazoomManager.setDatazoomConfig(config);
-    }, []);
-
-    const getDatazoomStatus = useCallback(async () => {
-      console.log('📊 getDatazoomStatus called!');
-      return await NativeDatazoomManager.getDatazoomStatus();
-    }, []);
-
     const setSource = useCallback(
       (_source?: ReactVideoSource) => {
         return NativeVideoManager.setSourceCmd(
@@ -732,8 +722,6 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
         setDatazoom: setDatazoomNative, // Legacy method - maps to startDatazoom
         startDatazoom: setDatazoomNative,
         stopDatazoom,
-        setDatazoomConfig,
-        getDatazoomStatus,
       }),
       [
         seek,
@@ -751,8 +739,6 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
         setSource,
         setDatazoomNative,
         stopDatazoom,
-        setDatazoomConfig,
-        getDatazoomStatus,
       ],
     );
 

@@ -24,18 +24,6 @@ export interface DatazoomManagerType {
    * @param reactTag - React tag for the video component
    */
   stopDatazoom: (reactTag: Int32) => Promise<void>;
-  
-  /**
-   * Set custom Datazoom configuration (global configuration)
-   * @param config - Configuration object for Datazoom
-   */
-  setDatazoomConfig: (config: Record<string, any>) => Promise<void>;
-  
-  /**
-   * Get current Datazoom status (global status)
-   * @returns Promise resolving to status object
-   */
-  getDatazoomStatus: () => Promise<{isActive: boolean; sessionId?: string}>;
 }
 
 export default NativeModules.DatazoomManager as DatazoomManagerType;

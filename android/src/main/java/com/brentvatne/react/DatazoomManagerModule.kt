@@ -95,37 +95,4 @@ class DatazoomManagerModule(reactContext: ReactApplicationContext) : ReactContex
             Log.e(TAG, "Error stopping Datazoom: ${e.message}")
         }
     }
-
-    /**
-     * Set custom Datazoom configuration
-     */
-    @ReactMethod
-    fun setDatazoomConfig(config: ReadableMap) {
-        try {
-            // TODO: Implement Datazoom configuration
-            Log.d(TAG, "⚙️ Datazoom config set: $config")
-        } catch (e: Exception) {
-            Log.e(TAG, "Error setting Datazoom config: ${e.message}")
-        }
-    }
-        }
-    }
-
-    /**
-     * Get current Datazoom status
-     */
-    @ReactMethod
-    fun getDatazoomStatus(promise: Promise) {
-        try {
-            // TODO: Implement actual status retrieval from Datazoom SDK
-            val status: WritableMap = WritableNativeMap().apply {
-                putBoolean("isActive", true) // This should come from actual Datazoom status
-                putString("sessionId", "sample-android-session-id") // This should come from Datazoom
-            }
-            promise.resolve(status)
-        } catch (e: Exception) {
-            Log.e(TAG, "Error getting Datazoom status: ${e.message}")
-            promise.reject("DATAZOOM_ERROR", "Failed to get Datazoom status: ${e.message}")
-        }
-    }
 }
