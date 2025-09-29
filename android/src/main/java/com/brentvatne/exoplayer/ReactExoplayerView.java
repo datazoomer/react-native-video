@@ -153,10 +153,6 @@ import java.util.concurrent.TimeUnit;
 
 @SuppressLint("ViewConstructor")
 public class ReactExoplayerView extends FrameLayout implements
-    // Expose ExoPlayer instance for React Native bridge
-    public ExoPlayer getExoPlayerInstance() {
-        return player;
-    }
         LifecycleEventListener,
         Player.Listener,
         BandwidthMeter.EventListener,

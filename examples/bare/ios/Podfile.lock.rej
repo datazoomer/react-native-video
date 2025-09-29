@@ -1,9 +1,0 @@
-diff a/examples/bare/ios/Podfile.lock b/examples/bare/ios/Podfile.lock	(rejected hunks)
-@@ -1847,6 +1848,6 @@ SPEC CHECKSUMS:
-   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
-   Yoga: eca8dd841b7cd47d82d66be58af8e3aeb819012f
- 
--PODFILE CHECKSUM: 10c4b11e7216ee054eb8f68e38a0dc5bd1d41373
-+PODFILE CHECKSUM: 3dd388e5493be5a6c94e413ce01384aceeea2d48
- 
- COCOAPODS: 1.16.2

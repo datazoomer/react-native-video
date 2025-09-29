@@ -1,5 +1,6 @@
+import com.android.Version
 
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 buildscript {
@@ -29,7 +30,6 @@ buildscript {
 
     dependencies {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
-        classpath("com.android.tools.build:gradle:7.4.2")
     }
 
     ext {

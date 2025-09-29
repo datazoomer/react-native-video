@@ -1624,7 +1624,6 @@ DEPENDENCIES:
   - ReactTestApp-DevSupport (from `../node_modules/react-native-test-app`)
   - ReactTestApp-Resources (from `..`)
   - "RNCPicker (from `../node_modules/@react-native-picker/picker`)"
-  - SocketRocket (~> 0.7.0)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:

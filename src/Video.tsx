@@ -45,7 +45,6 @@ import {
   resolveAssetSourceForVideo,
 } from './utils';
 import NativeVideoManager from './specs/NativeVideoManager';
-import NativeDatazoomManager from './specs/NativeDatazoomManager';
 import {ViewType, CmcdMode, VideoRef} from './types';
 import type {
   OnLoadData,
@@ -110,7 +109,6 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
       localSourceEncryptionKeyScheme,
       minLoadRetryCount,
       bufferConfig,
-      setDatazoom: setDatazoomProp,
       ...rest
     },
     ref,
@@ -396,16 +394,6 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
       );
     }, []);
 
-    const setDatazoomNative = useCallback(() => {
-      console.log('🎯 [Video] setDatazoomNative called!');
-      return NativeDatazoomManager.startDatazoom(getReactTag(nativeRef));
-    }, []);
-
-    const stopDatazoom = useCallback(() => {
-      console.log('🛑 [Video] stopDatazoom called!');
-      return NativeDatazoomManager.stopDatazoom(getReactTag(nativeRef));
-    }, []);
-
     const setSource = useCallback(
       (_source?: ReactVideoSource) => {
         return NativeVideoManager.setSourceCmd(
@@ -494,27 +482,16 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
         if (Platform.OS === 'windows') {
           hasPoster && setShowPoster(false);
         }
-        
-        // Start Datazoom tracking for this video
-        console.log('📹 Starting Datazoom tracking...');
-        setDatazoomNative();
-        
-        setDatazoomProp?.();
-        
         onLoad?.(e.nativeEvent);
       },
-      [onLoad, hasPoster, setShowPoster, setDatazoomNative, setDatazoomProp],
+      [onLoad, hasPoster, setShowPoster],
     );
 
     const onVideoError = useCallback(
       (e: NativeSyntheticEvent<OnVideoErrorData>) => {
-        // Stop Datazoom tracking on error
-        console.log('❌ Video error, stopping Datazoom...');
-        stopDatazoom();
-        
         onError?.(e.nativeEvent);
       },
-      [onError, stopDatazoom],
+      [onError],
     );
 
     const onVideoProgress = useCallback(
@@ -536,17 +513,6 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
         onPlaybackStateChanged?.(e.nativeEvent);
       },
       [onPlaybackStateChanged],
-    );
-
-    const onVideoEnd = useCallback(
-      () => {
-        // Stop Datazoom tracking when video ends
-        console.log('🏁 Video ended, stopping Datazoom...');
-        stopDatazoom();
-        
-        onEnd?.();
-      },
-      [onEnd, stopDatazoom],
     );
 
     const _shutterColor = useMemo(() => {
@@ -733,10 +699,6 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
         enterPictureInPicture,
         exitPictureInPicture,
         setSource,
-        // Datazoom Analytics Methods
-        setDatazoom: setDatazoomNative, // Legacy method - maps to startDatazoom
-        startDatazoom: setDatazoomNative,
-        stopDatazoom,
       }),
       [
         seek,
@@ -752,8 +714,6 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
         enterPictureInPicture,
         exitPictureInPicture,
         setSource,
-        setDatazoomNative,
-        stopDatazoom,
       ],
     );
 
@@ -893,7 +853,7 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
           onVideoError={onError ? onVideoError : undefined}
           onVideoProgress={onProgress ? onVideoProgress : undefined}
           onVideoSeek={onSeek ? onVideoSeek : undefined}
-          onVideoEnd={onEnd ? onVideoEnd : undefined}
+          onVideoEnd={onEnd}
           onVideoBuffer={onBuffer ? onVideoBuffer : undefined}
           onVideoPlaybackStateChanged={
             onPlaybackStateChanged ? onVideoPlaybackStateChanged : undefined
