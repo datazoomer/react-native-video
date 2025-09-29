@@ -10,8 +10,8 @@
 @interface RCT_EXTERN_MODULE(RCTDatazoomManager, NSObject)
 
 RCT_EXTERN_METHOD(initDatazoom)
-RCT_EXTERN_METHOD(startDatazoom)
-RCT_EXTERN_METHOD(stopDatazoom)
+RCT_EXTERN_METHOD(startDatazoom : (nonnull NSNumber*)reactTag)
+RCT_EXTERN_METHOD(stopDatazoom : (nonnull NSNumber*)reactTag)
 RCT_EXTERN_METHOD(setDatazoomConfig : (NSDictionary*)config)
 RCT_EXTERN_METHOD(getDatazoomStatus : (RCTPromiseResolveBlock)resolve 
                   rejecter : (RCTPromiseRejectBlock)reject)

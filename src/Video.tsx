@@ -398,7 +398,7 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
 
     const setDatazoomNative = useCallback(() => {
       console.log('🎯 setDatazoomNative called!');
-      return NativeDatazoomManager.startDatazoom();
+      return NativeDatazoomManager.startDatazoom(getReactTag(nativeRef));
     }, []);
 
     const initDatazoom = useCallback(() => {
@@ -408,7 +408,7 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
 
     const stopDatazoom = useCallback(() => {
       console.log('🛑 stopDatazoom called!');
-      return NativeDatazoomManager.stopDatazoom();
+      return NativeDatazoomManager.stopDatazoom(getReactTag(nativeRef));
     }, []);
 
     const setDatazoomConfig = useCallback((config: Record<string, any>) => {

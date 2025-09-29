@@ -75,9 +75,11 @@ class RCTDatazoomManager: NSObject, RCTBridgeModule {
     
     @objc(startDatazoom:)
     func startDatazoom(_ reactTag: NSNumber) {
+      debugPrint("DZ Start Called")
         performOnVideoView(withReactTag: reactTag) { videoView in
             // Start Datazoom data collection
             if let player = videoView?._player {
+              debugPrint("DZ Context Called")
                 self.dzAdapter = Datazoom.shared.createContext(player: player)
                 print("▶️ Datazoom started for video with tag \(reactTag)")
             } else {
@@ -90,8 +92,9 @@ class RCTDatazoomManager: NSObject, RCTBridgeModule {
     func stopDatazoom(_ reactTag: NSNumber) {
         performOnVideoView(withReactTag: reactTag) { videoView in
             // Stop Datazoom data collection
-            self.dzAdapter?.close()
-            self.dzAdapter = nil
+            // TODO: Find the correct method to stop/destroy DzAdapter
+            // self.dzAdapter?.close()  // This method doesn't exist
+            self.dzAdapter = nil  // For now, just set to nil to release the adapter
             print("⏹️ Datazoom stopped for video with tag \(reactTag)")
         }
     }

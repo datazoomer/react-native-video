@@ -62,10 +62,16 @@ class DatazoomManagerModule(reactContext: ReactApplicationContext) : ReactContex
      * Start Datazoom data collection
      */
     @ReactMethod
-    fun startDatazoom() {
+    fun startDatazoom(reactTag: Int) {
         try {
-            // TODO: Implement Datazoom start
-            Log.d(TAG, "▶️ Datazoom started")
+            performOnPlayerView(reactTag) { playerView ->
+                if (playerView != null) {
+                    // TODO: Implement Datazoom start
+                    Log.d(TAG, "▶️ Datazoom started for video with tag $reactTag")
+                } else {
+                    Log.e(TAG, "❌ Could not start Datazoom - VideoPlayer not found")
+                }
+            }
         } catch (e: Exception) {
             Log.e(TAG, "Error starting Datazoom: ${e.message}")
         }
@@ -75,10 +81,16 @@ class DatazoomManagerModule(reactContext: ReactApplicationContext) : ReactContex
      * Stop Datazoom data collection
      */
     @ReactMethod
-    fun stopDatazoom() {
+    fun stopDatazoom(reactTag: Int) {
         try {
-            // TODO: Implement Datazoom stop
-            Log.d(TAG, "⏹️ Datazoom stopped")
+            performOnPlayerView(reactTag) { playerView ->
+                if (playerView != null) {
+                    // TODO: Implement Datazoom stop
+                    Log.d(TAG, "⏹️ Datazoom stopped for video with tag $reactTag")
+                } else {
+                    Log.e(TAG, "❌ Could not stop Datazoom - VideoPlayer not found")
+                }
+            }
         } catch (e: Exception) {
             Log.e(TAG, "Error stopping Datazoom: ${e.message}")
         }

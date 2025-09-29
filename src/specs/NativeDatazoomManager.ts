@@ -1,4 +1,7 @@
 import {NativeModules} from 'react-native';
+import type {
+  Int32,
+} from 'react-native/Libraries/Types/CodegenTypes';
 
 /**
  * Interface for Datazoom Analytics functionality
@@ -6,28 +9,30 @@ import {NativeModules} from 'react-native';
  */
 export interface DatazoomManagerType {
   /**
-   * Initialize Datazoom analytics system
+   * Initialize Datazoom analytics system (global initialization)
    */
   initDatazoom: () => Promise<void>;
   
   /**
-   * Start Datazoom data collection
+   * Start Datazoom data collection for a specific video
+   * @param reactTag - React tag for the video component
    */
-  startDatazoom: () => Promise<void>;
+  startDatazoom: (reactTag: Int32) => Promise<void>;
   
   /**
-   * Stop Datazoom data collection
+   * Stop Datazoom data collection for a specific video
+   * @param reactTag - React tag for the video component
    */
-  stopDatazoom: () => Promise<void>;
+  stopDatazoom: (reactTag: Int32) => Promise<void>;
   
   /**
-   * Set custom Datazoom configuration
+   * Set custom Datazoom configuration (global configuration)
    * @param config - Configuration object for Datazoom
    */
   setDatazoomConfig: (config: Record<string, any>) => Promise<void>;
   
   /**
-   * Get current Datazoom status
+   * Get current Datazoom status (global status)
    * @returns Promise resolving to status object
    */
   getDatazoomStatus: () => Promise<{isActive: boolean; sessionId?: string}>;
