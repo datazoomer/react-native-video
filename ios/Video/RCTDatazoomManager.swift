@@ -75,17 +75,21 @@ class RCTDatazoomManager: NSObject, RCTBridgeModule {
     
     @objc(startDatazoom:)
     func startDatazoom(_ reactTag: NSNumber) {
-      debugPrint("DZ Start Called")
-        performOnVideoView(withReactTag: reactTag) { videoView in
-            // Start Datazoom data collection
-            if let player = videoView?._player {
-              debugPrint("DZ Context Called")
-                self.dzAdapter = Datazoom.shared.createContext(player: player)
-                print("▶️ Datazoom started for video with tag \(reactTag)")
-            } else {
-                print("❌ Could not start Datazoom - player not found")
-            }
+      
+      DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+        debugPrint("DZ Start Called")
+        self.performOnVideoView(withReactTag: reactTag) { videoView in
+          // Start Datazoom data collection
+          
+          if let player = videoView?.getAVPlayerInstance() {
+            debugPrint("DZ Context Called")
+            self.dzAdapter = Datazoom.shared.createContext(player: player)
+            print("▶️ Datazoom started for video with tag \(reactTag)")
+          } else {
+            print("❌ Could not start Datazoom - player not found")
+          }
         }
+      }
     }
     
     @objc(stopDatazoom:)

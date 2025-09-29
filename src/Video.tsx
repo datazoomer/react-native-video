@@ -513,11 +513,16 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
         // Call initDatazoom when video is loaded and ready
         console.log('📹 Video loaded, calling initDatazoom...');
         initDatazoom();
+        
+        // Start Datazoom tracking for this video
+        console.log('📹 Starting Datazoom tracking...');
+        setDatazoomNative();
+        
         setDatazoomProp?.();
         
         onLoad?.(e.nativeEvent);
       },
-      [onLoad, hasPoster, setShowPoster, initDatazoom, setDatazoomProp],
+      [onLoad, hasPoster, setShowPoster, initDatazoom, setDatazoomNative, setDatazoomProp],
     );
 
     const onVideoError = useCallback(
