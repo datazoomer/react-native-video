@@ -1,6 +1,6 @@
 import React, {useCallback, useRef, useState, useEffect} from 'react';
 
-import {Platform, TouchableOpacity, View, StatusBar} from 'react-native';
+import {Platform, TouchableOpacity, View, StatusBar, Button, NativeModules} from 'react-native';
 
 import Video, {
   SelectedVideoTrackType,
@@ -68,6 +68,28 @@ const BasicExample = () => {
     });
   const [srcListId, setSrcListId] = useState(0);
   const [repeat, setRepeat] = useState(false);
+
+  // Debug: Check module registration
+  useEffect(() => {
+    console.log('🔍 Checking DatazoomManager registration...');
+    console.log('DatazoomManager available:', !!NativeModules.DatazoomManager);
+    if (NativeModules.DatazoomManager) {
+      console.log('✅ DatazoomManager found:', Object.getOwnPropertyNames(NativeModules.DatazoomManager));
+      
+      // Test the module
+      console.log('🧪 Testing DatazoomManager module...');
+      NativeModules.DatazoomManager.testDatazoomModule()
+        .then((result: any) => {
+          console.log('✅ DatazoomManager test result:', result);
+        })
+        .catch((error: any) => {
+          console.error('❌ DatazoomManager test failed:', error);
+        });
+    } else {
+      console.error('❌ DatazoomManager not found!');
+      console.log('Available modules:', Object.keys(NativeModules));
+    }
+  }, []);
   const [controls, setControls] = useState(false);
   const [useCache, setUseCache] = useState(false);
   const [showPoster, setShowPoster] = useState<boolean>(false);
@@ -212,6 +234,7 @@ const BasicExample = () => {
   };
 
   const onLoad = (data: OnLoadData) => {
+    console.log('Video loaded, duration:', data.duration);
     setDuration(data.duration);
     onAudioTracks(data);
     onTextTracks(data);
@@ -299,6 +322,11 @@ const BasicExample = () => {
     videoRef.current?.setSource({...currentSrc, bufferConfig: _bufferConfig});
   }, [currentSrc]);
 
+  const testDatazoom = useCallback(() => {
+    console.log('🧪 Manual test button pressed - calling initDatazoom');
+    videoRef.current?.initDatazoom();
+  }, []);
+
   return (
     <View style={styles.container}>
       <StatusBar animated={true} backgroundColor="black" hidden={false} />
@@ -350,6 +378,12 @@ const BasicExample = () => {
           />
         </TouchableOpacity>
       )}
+      
+      {/* Test Button for Datazoom */}
+      <View style={{position: 'absolute', top: 100, right: 20, zIndex: 999}}>
+        <Button title="Test Datazoom" onPress={testDatazoom} />
+      </View>
+      
       <Overlay
         channelDown={channelDown}
         channelUp={channelUp}

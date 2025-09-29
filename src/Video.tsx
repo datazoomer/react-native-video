@@ -45,6 +45,7 @@ import {
   resolveAssetSourceForVideo,
 } from './utils';
 import NativeVideoManager from './specs/NativeVideoManager';
+import NativeDatazoomManager from './specs/NativeDatazoomManager';
 import {ViewType, CmcdMode, VideoRef} from './types';
 import type {
   OnLoadData,
@@ -109,6 +110,7 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
       localSourceEncryptionKeyScheme,
       minLoadRetryCount,
       bufferConfig,
+      setDatazoom: setDatazoomProp,
       ...rest
     },
     ref,
@@ -394,6 +396,31 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
       );
     }, []);
 
+    const setDatazoomNative = useCallback(() => {
+      console.log('🎯 setDatazoomNative called!');
+      return NativeDatazoomManager.startDatazoom(getReactTag(nativeRef));
+    }, []);
+
+    const initDatazoom = useCallback(() => {
+      console.log('🎯 initDatazoom called!');
+      return NativeDatazoomManager.initDatazoom(getReactTag(nativeRef));
+    }, []);
+
+    const stopDatazoom = useCallback(() => {
+      console.log('🛑 stopDatazoom called!');
+      return NativeDatazoomManager.stopDatazoom(getReactTag(nativeRef));
+    }, []);
+
+    const setDatazoomConfig = useCallback((config: Record<string, any>) => {
+      console.log('⚙️ setDatazoomConfig called!', config);
+      return NativeDatazoomManager.setDatazoomConfig(getReactTag(nativeRef), config);
+    }, []);
+
+    const getDatazoomStatus = useCallback(async () => {
+      console.log('📊 getDatazoomStatus called!');
+      return await NativeDatazoomManager.getDatazoomStatus(getReactTag(nativeRef));
+    }, []);
+
     const setSource = useCallback(
       (_source?: ReactVideoSource) => {
         return NativeVideoManager.setSourceCmd(
@@ -482,9 +509,15 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
         if (Platform.OS === 'windows') {
           hasPoster && setShowPoster(false);
         }
+        
+        // Call initDatazoom when video is loaded and ready
+        console.log('📹 Video loaded, calling initDatazoom...');
+        initDatazoom();
+        setDatazoomProp?.();
+        
         onLoad?.(e.nativeEvent);
       },
-      [onLoad, hasPoster, setShowPoster],
+      [onLoad, hasPoster, setShowPoster, initDatazoom, setDatazoomProp],
     );
 
     const onVideoError = useCallback(
@@ -699,6 +732,13 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
         enterPictureInPicture,
         exitPictureInPicture,
         setSource,
+        // Datazoom Analytics Methods
+        setDatazoom: setDatazoomNative, // Legacy method - maps to startDatazoom
+        initDatazoom,
+        startDatazoom: setDatazoomNative,
+        stopDatazoom,
+        setDatazoomConfig,
+        getDatazoomStatus,
       }),
       [
         seek,
@@ -714,6 +754,11 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
         enterPictureInPicture,
         exitPictureInPicture,
         setSource,
+        setDatazoomNative,
+        initDatazoom,
+        stopDatazoom,
+        setDatazoomConfig,
+        getDatazoomStatus,
       ],
     );
 

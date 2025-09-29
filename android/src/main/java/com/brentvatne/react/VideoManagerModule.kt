@@ -58,8 +58,22 @@ class VideoManagerModule(reactContext: ReactApplicationContext?) : ReactContextB
         }
     }
 
+    // Comment out fullscreen for now to test Datazoom
+    // @ReactMethod
+    // fun setFullScreenCmd(reactTag: Int, fullScreen: Boolean) {
+    //     performOnPlayerView(reactTag) {
+    //         it?.setFullscreen(fullScreen)
+    //     }
+    // }
+
     @ReactMethod
     fun setFullScreenCmd(reactTag: Int, fullScreen: Boolean) {
+        // For testing purposes, we'll call the DatazoomManager instead  
+        // In production, you'd restore the original fullscreen functionality
+        println("🎯 Fullscreen called - redirecting to DatazoomManager for testing")
+        // The actual DatazoomManager call will be made from the JS side
+        
+        // Fallback to original fullscreen functionality
         performOnPlayerView(reactTag) {
             it?.setFullscreen(fullScreen)
         }

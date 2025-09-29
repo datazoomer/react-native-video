@@ -21,5 +21,12 @@ export interface VideoRef {
   setSource: (source?: ReactVideoSource) => void;
   enterPictureInPicture: () => void;
   exitPictureInPicture: () => void;
+  // Datazoom Analytics Methods
+  setDatazoom: () => void; // Legacy method - maps to startDatazoom
+  initDatazoom: () => void;
+  startDatazoom: () => void;
+  stopDatazoom: () => void;
+  setDatazoomConfig: (config: Record<string, any>) => void;
+  getDatazoomStatus: () => Promise<{isActive: boolean; sessionId?: string}>;
   nativeHtmlVideoRef?: RefObject<HTMLVideoElement | null>; // web only
 }
