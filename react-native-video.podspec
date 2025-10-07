@@ -25,10 +25,22 @@ Pod::Spec.new do |s|
   end
 
   s.subspec "Video" do |ss|
-    ss.source_files = "ios/Video/**/*.{h,m,swift,mm}"
+    ss.source_files = "ios/Video/**/*.{h,m,swift,mm}", "ios/*.{h,m,swift,mm}"
 
     if fabric_enabled
       ss.dependency "react-native-video/Fabric"
+    end
+
+    # Initialize Swift flags array
+    swift_flags = ['$(inherited)']
+
+    Pod::UI.puts "RNVideo: Checking DzAdapters - defined: #{defined?($RNVideoUseDzAdapters)}, value: #{$RNVideoUseDzAdapters}"
+    
+    if defined?($RNVideoUseDzAdapters) && $RNVideoUseDzAdapters
+      Pod::UI.puts "RNVideo: enable DataZoom Adapters"
+      # Add DzAVPlayerAdapter dependency
+      ss.dependency 'DzAVPlayerAdapter', '1.7.0'
+      swift_flags << '-D USE_DZ_ADAPTERS'
     end
 
     if defined?($RNVideoUseGoogleIMA)
@@ -36,19 +48,21 @@ Pod::Spec.new do |s|
 
       ss.ios.dependency 'GoogleAds-IMA-iOS-SDK', '~> 3.22.1'
       ss.tvos.dependency 'GoogleAds-IMA-tvOS-SDK', '~> 4.2'
-      ss.pod_target_xcconfig = {
-        'OTHER_SWIFT_FLAGS' => '$(inherited) -D USE_GOOGLE_IMA'
-      }
+      swift_flags << '-D USE_GOOGLE_IMA'
     end
+    
     if defined?($RNVideoUseVideoCaching)
       Pod::UI.puts "RNVideo: enable Video caching"
       ss.dependency "SPTPersistentCache", "~> 1.1.0"
       ss.dependency "DVAssetLoaderDelegate", "~> 0.3.1"
       ss.source_files = "ios/*/**/*.{h,m,swift,mm}"
-      ss.pod_target_xcconfig = {
-        'OTHER_SWIFT_FLAGS' => '$(inherited) -D USE_VIDEO_CACHING'
-      }
+      swift_flags << '-D USE_VIDEO_CACHING'
     end
+
+    # Apply all Swift flags at once
+    ss.pod_target_xcconfig = {
+      'OTHER_SWIFT_FLAGS' => swift_flags.join(' ')
+    }
   end
 
   # Use install_modules_dependencies helper to install the dependencies if React Native version >=0.71.0.

@@ -1,6 +1,11 @@
 import AVFoundation
 import AVKit
 import Foundation
+#if USE_DZ_ADAPTERS
+    import DzAVPlayerAdapter
+    import DzBase
+#endif
+
 #if USE_GOOGLE_IMA
     import GoogleInteractiveMediaAds
 #endif
@@ -88,6 +93,12 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
         }
     }
 
+    /* Dz Adapters */
+    #if USE_DZ_ADAPTERS
+        private var dzAdapter: DzAdapter? = nil
+    #endif
+
+  
     /* IMA Ads */
     #if USE_GOOGLE_IMA
         private var _imaAdsManager: RCTIMAAdsManager!
@@ -284,6 +295,14 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
     }
 
     deinit {
+      
+        #if USE_DZ_ADAPTERS
+            guard let dzAdapter = dzAdapter else { return }
+            dzAdapter.onDestroy()
+            Datazoom.shared.removeContext(adapter: dzAdapter)
+        #endif
+
+      
         #if USE_GOOGLE_IMA
             _imaAdsManager.releaseAds()
             _imaAdsManager = nil
@@ -571,6 +590,14 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
         if _player == nil {
             _player = AVPlayer()
             ReactNativeVideoManager.shared.onInstanceCreated(id: instanceId, player: _player as Any)
+          
+            #if USE_DZ_ADAPTERS
+                if let player  = _player {
+                  self.dzAdapter = Datazoom.shared.createContext(player: player)
+                } else {
+                  DebugLog("DZ Adapter could not be created, player is nil")
+                }
+            #endif
 
             _player!.replaceCurrentItem(with: playerItem)
 

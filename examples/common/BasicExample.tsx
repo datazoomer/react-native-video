@@ -213,6 +213,7 @@ const BasicExample = () => {
   };
 
   const onLoad = (data: OnLoadData) => {
+    
     setDuration(data.duration);
     onAudioTracks(data);
     onTextTracks(data);
@@ -303,9 +304,14 @@ const BasicExample = () => {
   useEffect(() => {
     (async () => {
       try {
-        await Datazoom.initialize({
-          apiKey: '65e464b9-a7ce-4e15-a060-6e23d732d05e'
-        });
+        const config = {
+          apiKey: 'f4864053-3ed0-4b94-bc19-1d130d624704'
+        };
+        
+        console.log('Datazoom initialize start');
+        
+        await Datazoom.initialize(config);
+        
         console.log('✅ Datazoom SDK initialized successfully');
       } catch (e) {
         console.error('❌ Failed to initialize Datazoom', e);
