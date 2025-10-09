@@ -305,7 +305,7 @@ const BasicExample = () => {
     (async () => {
       try {
         const config = {
-          apiKey: 'f4864053-3ed0-4b94-bc19-1d130d624704'
+          apiKey: '<YOUR_API_KEY>'
         };
         
         console.log('Datazoom initialize start');
