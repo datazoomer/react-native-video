@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {ResizeMode} from 'react-native-video';
+import {ResizeMode} from '@datazoom/dz_react_native_video';
 
 /*
  * MultiValueControl displays a list clickable text view
