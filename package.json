@@ -1,6 +1,6 @@
 {
     "name": "@datazoom/dz_react_native_video",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "A <Video /> element for react-native",
     "main": "lib/index",
     "source": "src/index.ts",
