@@ -1,16 +1,16 @@
 {
-    "name": "react-native-video",
-    "version": "6.16.1",
+    "name": "@datazoom/dz_react_native_video",
+    "version": "1.0.0",
     "description": "A <Video /> element for react-native",
     "main": "lib/index",
     "source": "src/index.ts",
     "react-native": "src/index",
     "license": "MIT",
     "author": "Community Contributors",
-    "homepage": "https://docs.thewidlarzgroup.com/react-native-video/",
+    "homepage": "https://github.com/datazoomer/react-native-video/tree/master/docs",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/TheWidlarzGroup/react-native-video.git"
+        "url": "git+https://github.com/datazoomer/react-native-video.git"
     },
     "devDependencies": {
         "@expo/config-plugins": "^8.0.5",
@@ -50,7 +50,10 @@
         "check-ios": "scripts/swift-format.sh && scripts/swift-lint.sh && scripts/clang-format.sh",
         "check-android": "scripts/kotlin-lint.sh",
         "check-all": "yarn check-android; yarn check-ios; yarn lint",
-        "codegen": "node ./node_modules/react-native/scripts/generate-codegen-artifacts.js --path ./ ./output"
+        "codegen": "node ./node_modules/react-native/scripts/generate-codegen-artifacts.js --path ./ ./output",
+        "dev:android": "bash scripts/dev-android.sh",
+        "dev:android:clean": "bash scripts/dev-android.sh --clean",
+        "dev:android:reinstall": "bash scripts/dev-android.sh --reinstall --clean"
     },
     "files": [
         "android",
