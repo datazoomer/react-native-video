@@ -1,5 +1,5 @@
 {
-    "name": "ad_rnv",
+        "name": "@datazoom/private_dz_react_native_video",
     "version": "1.0.2",
     "description": "A <Video /> element for react-native",
     "main": "lib/index",
