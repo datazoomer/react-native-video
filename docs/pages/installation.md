@@ -49,6 +49,15 @@ To enable Google IMA, add the following line to your Podfile:
 $RNVideoUseGoogleIMA=true
 ```
 
+#### DzAVPlayerAdapter
+
+To enable DzAVPlayerAdapter, add the following line to your Podfile: ([more info here](other/caching.md))
+
+```podfile
+# Enable DzAVPlayerAdapter
+$RNVideoUseDzAdapters = true 
+```
+
 **If you are using Expo, you can use the [Expo plugin](other/expo.md).**
 
 > **Note:** If you are enabling video caching (using `$RNVideoUseVideoCaching`), you must add the following to your `Gemfile`:
