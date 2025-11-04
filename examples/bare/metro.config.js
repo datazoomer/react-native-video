@@ -15,13 +15,10 @@ module.exports = makeMetroConfig({
     // Add support for ../common by including it in extraNodeModules
     extraNodeModules: {
       common: path.resolve(__dirname, '../common'),
-      'react-native-video': path.resolve(__dirname, '../../lib/'),
       '@react-native-picker/picker': path.resolve(__dirname, 'node_modules/@react-native-picker/picker'),
     },
   },
   watchFolders: [
-    path.join(__dirname, 'node_modules', 'react-native-video'),
-    path.resolve(__dirname, '../..'),
     path.resolve(__dirname, '../common'),
   ],
 });

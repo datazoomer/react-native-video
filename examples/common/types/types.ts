@@ -1,4 +1,4 @@
-import {Drm, ReactVideoSource, TextTracks} from 'react-native-video';
+import {Drm, ReactVideoSource, TextTracks} from '@datazoom/dz_react_native_video';
 
 export type AdditionalSourceInfo = {
   textTracks?: TextTracks;

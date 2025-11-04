@@ -4,7 +4,7 @@ import {
   ISO639_1,
   SelectedTrackType,
   TextTrackType,
-} from 'react-native-video';
+} from '@datazoom/dz_react_native_video';
 import {SampleVideoSource} from '../types';
 import {localeVideo} from '../assets';
 import {Platform} from 'react-native';

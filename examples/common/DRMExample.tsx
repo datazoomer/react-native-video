@@ -10,7 +10,7 @@ import {
   Button,
   ActivityIndicator,
 } from 'react-native';
-import Video, {DRMType, ReactVideoSourceProperties} from 'react-native-video';
+import Video, {DRMType, ReactVideoSourceProperties} from '@datazoom/dz_react_native_video';
 
 type SourceType = ReactVideoSourceProperties | null;
 

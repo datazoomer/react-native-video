@@ -10,7 +10,7 @@ import {
   View,
 } from 'react-native';
 
-import Video, {ResizeMode} from 'react-native-video';
+import Video, {ResizeMode} from '@datazoom/dz_react_native_video';
 
 class VideoPlayer extends Component {
   constructor(props: any) {

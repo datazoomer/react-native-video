@@ -30,7 +30,7 @@ import Video, {
   type EnumValues,
   type OnBandwidthUpdateData,
   type ControlsStyles,
-} from 'react-native-video';
+} from '@datazoom/dz_react_native_video';
 import styles from './styles';
 import {type AdditionalSourceInfo} from './types';
 import {

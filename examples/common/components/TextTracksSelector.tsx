@@ -4,7 +4,7 @@ import {
   type TextTrack,
   type SelectedTrack,
   SelectedTrackType,
-} from 'react-native-video';
+} from '@datazoom/dz_react_native_video';
 import styles from '../styles';
 import React from 'react';
 
